@@ -1,7 +1,6 @@
-# White Balance for OBS — v0.1 install
+# Installing White Balance for OBS
 
-**File:** `obs-whitebalance-0.1-macos-universal.zip`
-**SHA-256:** `267cde5a3cf19b8ce581d67cc568e96deef6bc993c17d1b47a2a54927e2c0be9`
+Download `obs-whitebalance-<version>-macos-universal.zip` from the latest release on the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Each release's notes list the zip's SHA-256 checksum. To verify a download, compare it against `shasum -a 256 <file>.zip`.
 
 | | |
 |---|---|
@@ -10,7 +9,8 @@
 
 ## Install
 1. Quit OBS.
-2. Unzip `obs-whitebalance-0.1-macos-universal.zip`. You get `obs-whitebalance.plugin`.
+2. Unzip the downloaded zip. You get `obs-whitebalance.plugin`.
+   To update, replace the existing `obs-whitebalance.plugin` with the new one.
 3. Copy it into your OBS plugins folder (create the folder if it doesn't exist):
    ```sh
    mkdir -p ~/Library/Application\ Support/obs-studio/plugins
@@ -23,7 +23,7 @@
    ```
 5. Start OBS. Right-click a video source → **Filters** → **+** → **White Balance**.
 
-To check it loaded, go to **Help → Log Files → View Current Log**. Look for `[obs-whitebalance] plugin loaded successfully (version 0.1.0)`.
+To check it loaded, go to **Help → Log Files → View Current Log**. Look for `[obs-whitebalance] plugin loaded successfully (version …)`.
 
 ## Use
 1. Click the **eyedropper button** next to **Sample Size**.
