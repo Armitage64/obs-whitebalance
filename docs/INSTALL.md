@@ -25,12 +25,15 @@ Download the file for your platform from the latest release on the [Releases pag
 ## Windows
 1. Quit OBS.
 2. Extract `obs-whitebalance-<version>-windows-x64.zip`. It contains a folder named `obs-whitebalance`.
-3. Copy that `obs-whitebalance` folder into `C:\ProgramData\obs-studio\plugins\`. Create the `plugins` folder if needed. To update, replace the existing folder. The result should be:
+3. Copy that `obs-whitebalance` folder into `C:\ProgramData\obs-studio\plugins\`. Create the `obs-studio` and `plugins` folders if they don't exist. To update, replace the existing folder. The result should be:
    ```
    C:\ProgramData\obs-studio\plugins\obs-whitebalance\bin\64bit\obs-whitebalance.dll
-   C:\ProgramData\obs-studio\plugins\obs-whitebalance\data\...
+   C:\ProgramData\obs-studio\plugins\obs-whitebalance\data\white_balance.effect
+   C:\ProgramData\obs-studio\plugins\obs-whitebalance\data\locale\en-US.ini
    ```
-   `ProgramData` is hidden by default: paste the path into Explorer's address bar. Copying there needs administrator approval.
+   - `ProgramData` (one word) is **not** `Program Files`. It's hidden by default: type `C:\ProgramData` into Explorer's address bar. Copying there needs administrator approval.
+   - Don't put the plugin in OBS's program folder (`C:\Program Files\obs-studio\…`), and don't create a `plugins` folder there. OBS never looks in such a folder. Copying the DLL into `C:\Program Files\obs-studio\obs-plugins\64bit\` does load it, but OBS's Plugin Manager flags that as a **Legacy** location that will stop working in a future release.
+   - Install only one copy. If an older copy exists in the legacy location, remove it.
 
 ## Check it loaded
 Start OBS. Right-click a video source → **Filters** → **+** → **White Balance**.
@@ -51,7 +54,7 @@ Quit OBS, then delete the plugin:
 ## Troubleshooting
 - **Filter not listed:**
   - Check the folder layout above. On macOS the plugin must sit directly in `plugins`, and you must have run the `xattr` command.
-  - On Windows, the DLL must be at `…\obs-whitebalance\bin\64bit\`.
+  - On Windows, the DLL must be at `C:\ProgramData\obs-studio\plugins\obs-whitebalance\bin\64bit\` (ProgramData, not Program Files).
   - Then look in the OBS log for `obs-whitebalance` errors.
 - **Picker shows black / "sending completely black frames":** the source has no picture, for example a capture card with no signal. Also check you added the filter to the right source; one hidden under another source in the scene isn't visible in the preview.
 - **Picker says "Waiting for video…":** the filter must be enabled and the source visible in Preview or Program.
