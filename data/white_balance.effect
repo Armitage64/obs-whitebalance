@@ -1,0 +1,120 @@
+// obs-whitebalance: linear-light RGB gain white balance.
+//
+// Input textures are premultiplied alpha (as produced by libobs filter
+// rendering). "Draw" is used when the texture holds non-linear sRGB values
+// (GS_CS_SRGB without linear sRGB sampling); "DrawLinear" when it holds linear
+// values (16F / extended / hardware sRGB decode). The Snapshot techniques
+// write an un-premultiplied, opaque, non-linear sRGB 8-bit copy of the
+// *uncorrected* input for the eyedropper.
+
+uniform float4x4 ViewProj;
+uniform texture2d image;
+uniform float3 gain;
+
+sampler_state textureSampler {
+	Filter   = Point;
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+
+struct VertData {
+	float4 pos : POSITION;
+	float2 uv  : TEXCOORD0;
+};
+
+VertData VSDefault(VertData v_in)
+{
+	VertData v_out;
+	v_out.pos = mul(float4(v_in.pos.xyz, 1.0), ViewProj);
+	v_out.uv  = v_in.uv;
+	return v_out;
+}
+
+float srgb_to_linear_ch(float u)
+{
+	return (u <= 0.04045) ? (u / 12.92) : pow((u + 0.055) / 1.055, 2.4);
+}
+
+float3 srgb_to_linear(float3 v)
+{
+	return float3(srgb_to_linear_ch(v.r), srgb_to_linear_ch(v.g), srgb_to_linear_ch(v.b));
+}
+
+float linear_to_srgb_ch(float u)
+{
+	return (u <= 0.0031308) ? (12.92 * u) : (1.055 * pow(u, 1.0 / 2.4) - 0.055);
+}
+
+float3 linear_to_srgb(float3 v)
+{
+	return float3(linear_to_srgb_ch(v.r), linear_to_srgb_ch(v.g), linear_to_srgb_ch(v.b));
+}
+
+float3 unpremultiply(float4 c)
+{
+	return (c.a > 0.0) ? (c.rgb / c.a) : float3(0.0, 0.0, 0.0);
+}
+
+float4 PSDraw(VertData v_in) : TARGET
+{
+	float4 c = image.Sample(textureSampler, v_in.uv);
+	float3 rgb = unpremultiply(c);
+	rgb = srgb_to_linear(saturate(rgb)) * gain;
+	rgb = linear_to_srgb(saturate(rgb));
+	return float4(rgb * c.a, c.a);
+}
+
+float4 PSDrawLinear(VertData v_in) : TARGET
+{
+	// gains commute with premultiplication in linear light
+	float4 c = image.Sample(textureSampler, v_in.uv);
+	return float4(c.rgb * gain, c.a);
+}
+
+float4 PSSnapshot(VertData v_in) : TARGET
+{
+	float4 c = image.Sample(textureSampler, v_in.uv);
+	return float4(saturate(unpremultiply(c)), 1.0);
+}
+
+float4 PSSnapshotLinear(VertData v_in) : TARGET
+{
+	float4 c = image.Sample(textureSampler, v_in.uv);
+	return float4(linear_to_srgb(saturate(unpremultiply(c))), 1.0);
+}
+
+technique Draw
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader  = PSDraw(v_in);
+	}
+}
+
+technique DrawLinear
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader  = PSDrawLinear(v_in);
+	}
+}
+
+technique Snapshot
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader  = PSSnapshot(v_in);
+	}
+}
+
+technique SnapshotLinear
+{
+	pass
+	{
+		vertex_shader = VSDefault(v_in);
+		pixel_shader  = PSSnapshotLinear(v_in);
+	}
+}
