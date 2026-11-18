@@ -16,6 +16,12 @@ add_library(${CMAKE_PROJECT_NAME} MODULE)
 find_package(libobs REQUIRED)
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::libobs)
 
+# wb-filter.c uses pthread mutexes; on Windows OBS provides them via w32-pthreads
+if(OS_WINDOWS)
+  find_package(w32-pthreads REQUIRED)
+  target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::w32-pthreads)
+endif()
+
 if(ENABLE_FRONTEND_API)
   find_package(obs-frontend-api REQUIRED)
   target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OBS::obs-frontend-api)

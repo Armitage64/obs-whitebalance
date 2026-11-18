@@ -32,8 +32,7 @@ extern struct obs_source_info wb_filter_info;
  * pixels become available one or two frames later via wb_filter_copy_snapshot. */
 void wb_filter_request_snapshot(struct wb_filter *f);
 
-typedef void (*wb_snapshot_cb)(void *param, const uint8_t *rgba, uint32_t width, uint32_t height,
-			       uint32_t linesize);
+typedef void (*wb_snapshot_cb)(void *param, const uint8_t *rgba, uint32_t width, uint32_t height, uint32_t linesize);
 
 /* If a snapshot newer than *seq exists, invoke cb with it (under lock),
  * update *seq and return true. Pixels are non-linear sRGB RGBA8, opaque,

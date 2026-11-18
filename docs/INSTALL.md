@@ -1,29 +1,41 @@
 # Installing White Balance for OBS
 
-Download `obs-whitebalance-<version>-macos-universal.zip` from the latest release on the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Each release's notes list the zip's SHA-256 checksum. To verify a download, compare it against `shasum -a 256 <file>.zip`.
+Download the file for your platform from the latest release on the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Each release's notes list the SHA-256 checksum of every file. To verify a download, run `shasum -a 256 <file>` on macOS or `Get-FileHash <file>` in PowerShell, and compare.
 
 | | |
 |---|---|
-| Platform | macOS 12 or later, Apple Silicon and Intel (universal binary) |
+| macOS | 12 or later, Apple Silicon and Intel (universal) |
+| Windows | 10 or 11, 64-bit |
 | OBS Studio | 31 or later (tested on 33.0.1) |
 
-## Install
+## macOS
 1. Quit OBS.
-2. Unzip the downloaded zip. You get `obs-whitebalance.plugin`.
-   To update, replace the existing `obs-whitebalance.plugin` with the new one.
-3. Copy it into your OBS plugins folder (create the folder if it doesn't exist):
+2. Extract the macOS archive (`obs-whitebalance-<version>-macos-universal.tar.xz` or `.zip`). You get `obs-whitebalance.plugin`.
+3. Copy it into your OBS plugins folder (create the folder if needed). To update, replace the existing copy.
    ```sh
    mkdir -p ~/Library/Application\ Support/obs-studio/plugins
    cp -R obs-whitebalance.plugin ~/Library/Application\ Support/obs-studio/plugins/
    ```
    In Finder: **Go → Go to Folder…** → `~/Library/Application Support/obs-studio/plugins`.
-4. Clear the download quarantine flag. The plugin is ad-hoc signed, not notarized by Apple, so macOS blocks it if it came from a browser download:
+4. Clear the download quarantine flag. The plugin is not notarized by Apple, so macOS blocks it otherwise:
    ```sh
    xattr -dr com.apple.quarantine ~/Library/Application\ Support/obs-studio/plugins/obs-whitebalance.plugin
    ```
-5. Start OBS. Right-click a video source → **Filters** → **+** → **White Balance**.
 
-To check it loaded, go to **Help → Log Files → View Current Log**. Look for `[obs-whitebalance] plugin loaded successfully (version …)`.
+## Windows
+1. Quit OBS.
+2. Extract `obs-whitebalance-<version>-windows-x64.zip`. It contains a folder named `obs-whitebalance`.
+3. Copy that `obs-whitebalance` folder into `C:\ProgramData\obs-studio\plugins\`. Create the `plugins` folder if needed. To update, replace the existing folder. The result should be:
+   ```
+   C:\ProgramData\obs-studio\plugins\obs-whitebalance\bin\64bit\obs-whitebalance.dll
+   C:\ProgramData\obs-studio\plugins\obs-whitebalance\data\...
+   ```
+   `ProgramData` is hidden by default: paste the path into Explorer's address bar. Copying there needs administrator approval.
+
+## Check it loaded
+Start OBS. Right-click a video source → **Filters** → **+** → **White Balance**.
+
+You can also go to **Help → Log Files → View Current Log** and look for `[obs-whitebalance] plugin loaded successfully (version …)`.
 
 ## Use
 1. Click the **eyedropper button** next to **Sample Size**.
@@ -32,9 +44,14 @@ To check it loaded, go to **Help → Log Files → View Current Log**. Look for 
 4. **OK** keeps the values. **Cancel** restores the previous ones.
 
 ## Uninstall
-Quit OBS and delete `~/Library/Application Support/obs-studio/plugins/obs-whitebalance.plugin`.
+Quit OBS, then delete the plugin:
+- **macOS:** `~/Library/Application Support/obs-studio/plugins/obs-whitebalance.plugin`
+- **Windows:** `C:\ProgramData\obs-studio\plugins\obs-whitebalance`
 
 ## Troubleshooting
-- **Filter not listed:** check that the plugin sits directly in the `plugins` folder, not in a subfolder. Check that you ran the `xattr` command. Then look in the OBS log for `obs-whitebalance` errors.
+- **Filter not listed:**
+  - Check the folder layout above. On macOS the plugin must sit directly in `plugins`, and you must have run the `xattr` command.
+  - On Windows, the DLL must be at `…\obs-whitebalance\bin\64bit\`.
+  - Then look in the OBS log for `obs-whitebalance` errors.
 - **Picker shows black / "sending completely black frames":** the source has no picture, for example a capture card with no signal. Also check you added the filter to the right source; one hidden under another source in the scene isn't visible in the preview.
 - **Picker says "Waiting for video…":** the filter must be enabled and the source visible in Preview or Program.

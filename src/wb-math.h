@@ -42,9 +42,9 @@ struct wb_rgb {
 
 enum wb_solve_status {
 	WB_SOLVE_OK = 0,
-	WB_SOLVE_CLAMPED, /* solved, but result exceeded +-100 and was clamped */
+	WB_SOLVE_CLAMPED,  /* solved, but result exceeded +-100 and was clamped */
 	WB_SOLVE_TOO_DARK, /* a channel is too close to black to be reliable */
-	WB_SOLVE_CLIPPED, /* a channel is at/near clipping */
+	WB_SOLVE_CLIPPED,  /* a channel is at/near clipping */
 };
 
 double wb_srgb_to_linear(double v);

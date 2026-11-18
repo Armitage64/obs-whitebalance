@@ -3,8 +3,13 @@
 All notable changes to this project are documented here. Versions follow [Semantic Versioning](https://semver.org/). Downloads are on the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases).
 
 ## [Unreleased]
+### Added
+- Windows (x64) support and build instructions.
+- GitHub Actions CI building macOS, Windows and Ubuntu, with a format check. Version tags create a draft release with all packages and checksums.
+
 ### Changed
-- Install instructions moved to `docs/INSTALL.md`. Release builds are now distributed only through GitHub Releases, not committed to the repository.
+- Picker readout uses the system monospace font (was macOS-only Menlo).
+- Install instructions moved to `docs/INSTALL.md` and now cover Windows. Release builds are distributed only through GitHub Releases, not committed to the repository.
 
 ## [0.1.0] - 2026-11-18
 First release.

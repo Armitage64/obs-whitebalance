@@ -20,6 +20,7 @@ the Free Software Foundation; either version 2 of the License, or
 #include <QComboBox>
 #include <QDialogButtonBox>
 #include <QDoubleSpinBox>
+#include <QFontDatabase>
 #include <QFormLayout>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -33,6 +34,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 
 static QString T(const char *key)
 {
@@ -161,8 +163,8 @@ void PickerView::paintEvent(QPaintEvent *)
 void PickerView::drawLoupe(QPainter &p)
 {
 	const int span = std::max(15, sampleSize_ + 6) | 1; /* odd, image pixels */
-	const int size = 96;                               /* widget pixels */
-	const double gap = 14;                             /* offset from cursor */
+	const int size = 96;                                /* widget pixels */
+	const double gap = 14;                              /* offset from cursor */
 	const QRect src(hoverImg_.x() - span / 2, hoverImg_.y() - span / 2, span, span);
 
 	/* build the zoomed region with edge clamping */
@@ -286,7 +288,7 @@ PickerDialog::PickerDialog(obs_source_t *filter, wb_filter *f, QWidget *parent)
 
 	readout_ = new QLabel(" ");
 	readout_->setTextInteractionFlags(Qt::TextSelectableByMouse);
-	readout_->setFont(QFont(QStringLiteral("Menlo")));
+	readout_->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
 	status_ = new QLabel(" ");
 	status_->setWordWrap(true);
 
@@ -417,7 +419,8 @@ void PickerDialog::checkFrameContent()
 	if (framesSeen_ == 1) {
 		const uint8_t *c = frame_.constScanLine(frame_.height() / 2) + (size_t)(frame_.width() / 2) * 4;
 		obs_log(LOG_INFO, "eyedropper first frame %dx%d: center RGB %u %u %u, max %d%s", frame_.width(),
-			frame_.height(), c[0], c[1], c[2], maxv, black ? " (all black)" : "");
+			frame_.height(), (unsigned)c[0], (unsigned)c[1], (unsigned)c[2], maxv,
+			black ? " (all black)" : "");
 	}
 	view_->setOverlay(black ? T("WhiteBalance.Picker.BlackFrame") : QString());
 }
@@ -474,7 +477,9 @@ void PickerDialog::onHovered(const QRect &r)
 	if (frame_.isNull())
 		return;
 	const struct wb_rgb a = averageLinear(r);
-	auto to8 = [](double v) { return (int)std::lround(wb_linear_to_srgb(v) * 255.0); };
+	auto to8 = [](double v) {
+		return (int)std::lround(wb_linear_to_srgb(v) * 255.0);
+	};
 	QString text = QStringLiteral("RGB %1 %2 %3     ").arg(to8(a.r), 3).arg(to8(a.g), 3).arg(to8(a.b), 3);
 	double t = 0, m = 0;
 	switch (wb_params_from_sample(a, &t, &m)) {

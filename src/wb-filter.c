@@ -154,8 +154,7 @@ static obs_properties_t *wb_get_properties(void *data)
 {
 	obs_properties_t *props = obs_properties_create();
 
-	obs_properties_add_button2(props, "pick_button", obs_module_text("WhiteBalance.Pick"), wb_pick_clicked,
-				   data);
+	obs_properties_add_button2(props, "pick_button", obs_module_text("WhiteBalance.Pick"), wb_pick_clicked, data);
 
 	obs_property_t *list = obs_properties_add_list(props, S_SAMPLE_SIZE, obs_module_text("WhiteBalance.SampleSize"),
 						       OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
@@ -168,15 +167,13 @@ static obs_properties_t *wb_get_properties(void *data)
 	obs_property_set_long_description(list, obs_module_text("WhiteBalance.SampleSize.Desc"));
 
 	obs_properties_t *wb = obs_properties_create();
-	obs_property_t *t = obs_properties_add_float_slider(wb, S_TEMPERATURE,
-							    obs_module_text("WhiteBalance.Temperature"),
-							    WB_PARAM_MIN, WB_PARAM_MAX, 0.1);
+	obs_property_t *t = obs_properties_add_float_slider(
+		wb, S_TEMPERATURE, obs_module_text("WhiteBalance.Temperature"), WB_PARAM_MIN, WB_PARAM_MAX, 0.1);
 	obs_property_set_long_description(t, obs_module_text("WhiteBalance.Temperature.Desc"));
 	obs_property_t *m = obs_properties_add_float_slider(wb, S_TINT, obs_module_text("WhiteBalance.Tint"),
 							    WB_PARAM_MIN, WB_PARAM_MAX, 0.1);
 	obs_property_set_long_description(m, obs_module_text("WhiteBalance.Tint.Desc"));
-	obs_properties_add_button2(wb, "reset_button", obs_module_text("WhiteBalance.Reset"), wb_reset_clicked,
-				   data);
+	obs_properties_add_button2(wb, "reset_button", obs_module_text("WhiteBalance.Reset"), wb_reset_clicked, data);
 	obs_properties_add_group(props, "wb_group", obs_module_text("WhiteBalance.Group"), OBS_GROUP_NORMAL, wb);
 
 	return props;
@@ -230,8 +227,7 @@ static void wb_read_stage(struct wb_filter *f)
 	gs_stagesurface_unmap(f->stage);
 }
 
-static void wb_take_snapshot(struct wb_filter *f, gs_texture_t *input, uint32_t cx, uint32_t cy,
-			     bool input_is_linear)
+static void wb_take_snapshot(struct wb_filter *f, gs_texture_t *input, uint32_t cx, uint32_t cy, bool input_is_linear)
 {
 	if (!f->snap_tr)
 		f->snap_tr = gs_texrender_create(GS_RGBA, GS_ZS_NONE);

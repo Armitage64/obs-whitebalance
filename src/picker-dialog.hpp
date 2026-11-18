@@ -36,7 +36,11 @@ public:
 
 	void setImage(const QImage &img);
 	void setSampleSize(int n);
-	void setLastSample(const QRect &r) { lastSample_ = r; update(); }
+	void setLastSample(const QRect &r)
+	{
+		lastSample_ = r;
+		update();
+	}
 	void setMessage(const QString &msg);
 	/* text banner drawn over the image (empty = none) */
 	void setOverlay(const QString &msg);

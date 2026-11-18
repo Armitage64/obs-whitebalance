@@ -3,7 +3,7 @@
 An OBS Studio video filter that brings Premiere Pro's **Lumetri Color → Basic Correction → WB Selector** to OBS. You click a neutral target (ideally an 18% gray card) with an eyedropper, and the filter sets **Temperature** and **Tint** so that the patch becomes neutral. Sliders with spin boxes let you fine-tune the result.
 
 ## Install
-Download the latest macOS build (universal: Apple Silicon and Intel) from the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Install steps are in [`docs/INSTALL.md`](docs/INSTALL.md). Changes per version are in [`CHANGELOG.md`](CHANGELOG.md).
+Download the latest build for macOS (universal: Apple Silicon and Intel) or Windows (x64) from the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Install steps are in [`docs/INSTALL.md`](docs/INSTALL.md). Changes per version are in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Usage
 1. Right-click a video source (e.g. *FaceTime HD Camera*) and choose **Filters**. Click **+** and add **White Balance**.
@@ -36,14 +36,31 @@ Make sure you add the filter to the source you actually want to correct. A sourc
 - **Rejected samples:** too dark (any channel < 0.003 linear) or clipped (≥ 0.95 linear) samples are refused with a message.
 - **Rendering:** the filter renders its input into its own texture, which drives both the corrected output and the eyedropper snapshot. The snapshot reaches the CPU through a staging surface, read one frame late so the GPU doesn't stall. Color spaces handled: SRGB, SRGB_16F and 709_EXTENDED (HDR).
 
-## Build (macOS)
+## Build
+The first configure downloads OBS sources, obs-deps and Qt6 (see `buildspec.json`).
+
+**macOS** (Xcode). The output is a universal (arm64 + x86_64) bundle:
 ```sh
 cmake --preset macos
 cmake --build --preset macos
 cp -R build_macos/RelWithDebInfo/obs-whitebalance.plugin \
   ~/Library/Application\ Support/obs-studio/plugins/
 ```
-The first configure downloads OBS sources, obs-deps and Qt6 (see `buildspec.json`). The output is a universal (arm64 + x86_64) bundle.
+
+**Windows** (Visual Studio 2022 with the "Desktop development with C++" workload, CMake 3.28+):
+```powershell
+cmake --preset windows-x64
+cmake --build --preset windows-x64
+cmake --install build_x64 --prefix release --config RelWithDebInfo
+```
+Then copy `release\obs-whitebalance` into `C:\ProgramData\obs-studio\plugins\`.
+
+**Linux** (Ubuntu 24.04): `cmake --preset ubuntu-x86_64 && cmake --build --preset ubuntu-x86_64`. This needs the OBS and Qt6 development packages; see `.github/scripts/utils.zsh/setup_ubuntu`.
+
+### Continuous integration
+GitHub Actions (`.github/workflows`, from obs-plugintemplate) builds macOS, Windows and Ubuntu on every push to `main`. It also checks formatting (clang-format 19, gersemi).
+
+Pushing a version tag such as `v0.2.0` also creates a **draft** GitHub release with every platform's package and checksums attached. Review the draft and publish it. Bump `version` in `buildspec.json` and update `CHANGELOG.md` before tagging.
 
 ### Unit tests (no OBS needed)
 ```sh
