@@ -319,22 +319,32 @@ PickerDialog::PickerDialog(obs_source_t *filter, wb_filter *f, QWidget *parent)
 	controls->addRow(T("WhiteBalance.Tint"), tint_);
 	controls->addRow(QString(), showCorrected_);
 
-	/* Fixed-width side panel: readout/status text changes on every mouse
-	 * move and must never resize the image view. */
-	readout_->setWordWrap(true);
-	readout_->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-	readout_->setMinimumHeight(readout_->fontMetrics().lineSpacing() * 4);
+	sampleSize_->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+	sampleSize_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	controls->setFieldGrowthPolicy(QFormLayout::FieldsStayAtSizeHint);
+
+	/* Live readout: one line above the image. Its text changes on every
+	 * mouse move, so it must never influence the layout: fixed height and
+	 * an ignored horizontal size hint (long text is clipped, not grown). */
+	readout_->setWordWrap(false);
+	readout_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+	readout_->setFixedHeight(readout_->fontMetrics().lineSpacing() + 6);
+
+	auto *left = new QVBoxLayout;
+	left->addWidget(readout_);
+	left->addWidget(view_, 1);
+
+	/* Fixed-width side panel so status text can't resize the image view. */
 	auto *sidePanel = new QWidget;
-	sidePanel->setFixedWidth(280);
+	sidePanel->setFixedWidth(260);
 	auto *side = new QVBoxLayout(sidePanel);
 	side->setContentsMargins(0, 0, 0, 0);
 	side->addLayout(controls);
-	side->addWidget(readout_);
 	side->addWidget(status_);
 	side->addStretch(1);
 
 	auto *body = new QHBoxLayout;
-	body->addWidget(view_, 1);
+	body->addLayout(left, 1);
 	body->addWidget(sidePanel);
 
 	auto *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset);
@@ -465,15 +475,15 @@ void PickerDialog::onHovered(const QRect &r)
 		return;
 	const struct wb_rgb a = averageLinear(r);
 	auto to8 = [](double v) { return (int)std::lround(wb_linear_to_srgb(v) * 255.0); };
-	QString text = QStringLiteral("RGB  %1 %2 %3\n").arg(to8(a.r), 3).arg(to8(a.g), 3).arg(to8(a.b), 3);
+	QString text = QStringLiteral("RGB %1 %2 %3     ").arg(to8(a.r), 3).arg(to8(a.g), 3).arg(to8(a.b), 3);
 	double t = 0, m = 0;
 	switch (wb_params_from_sample(a, &t, &m)) {
 	case WB_SOLVE_OK:
 	case WB_SOLVE_CLAMPED:
-		text += QStringLiteral("%1 %2\n%3 %4")
-				.arg(T("WhiteBalance.Temperature") + ":", -13)
+		text += QStringLiteral("%1 %2     %3 %4")
+				.arg(T("WhiteBalance.Temperature") + ":")
 				.arg(t, 6, 'f', 1)
-				.arg(T("WhiteBalance.Tint") + ":", -13)
+				.arg(T("WhiteBalance.Tint") + ":")
 				.arg(m, 6, 'f', 1);
 		break;
 	case WB_SOLVE_TOO_DARK:

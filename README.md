@@ -3,9 +3,9 @@
 An OBS Studio video filter that brings Premiere Pro's **Lumetri Color → Basic Correction → WB Selector** to OBS. You click a neutral target (ideally an 18% gray card) with an eyedropper, and the filter sets **Temperature** and **Tint** so that the patch becomes neutral. Sliders with spin boxes let you fine-tune the result.
 
 ## Usage
-1. Right-click a video source (e.g. *FaceTime HD Camera*) and choose **Filters**. Click **+** and add **White Balance (Eyedropper)**.
-2. Click **Pick White Balance (Eyedropper)…**. A window opens with a live, *uncorrected* view of the source.
-3. Hover to see a magnified loupe, the sample box and a live RGB / Temperature / Tint readout.
+1. Right-click a video source (e.g. *FaceTime HD Camera*) and choose **Filters**. Click **+** and add **White Balance**.
+2. Click the **eyedropper button** to the right of the **Sample Size** dropdown. A window opens with a live, *uncorrected* view of the source.
+3. Hover to see a magnified loupe and the sample box. A live RGB / Temperature / Tint readout runs along the top of the image.
    - **Click** to sample the chosen area (1–31 px square).
    - **Drag** to average a rectangle, such as a whole gray card.
 4. The correction shows live in OBS. To fine-tune, use the Temperature/Tint fields in the picker or the sliders in the filter properties.
@@ -18,7 +18,9 @@ Sign conventions match Lumetri:
 - **+Tint** is magenta; −Tint is green.
 - Both range from −100 to 100.
 
-The source must be visible in Preview or Program, and the filter enabled, for the picker to receive frames.
+The source must be visible in Preview or Program, and the filter enabled, for the picker to receive frames. If the source sends only black frames (e.g. a capture card with no signal), the picker says so.
+
+Make sure you add the filter to the source you actually want to correct. A source hidden underneath another one in the scene still renders, but you won't see it in the preview.
 
 ## How it works
 - Correction is a per-channel gain applied in **linear light**: sRGB is decoded, multiplied, then re-encoded. Rec.709 luminance of neutrals is preserved.
@@ -53,6 +55,13 @@ cmake -S tests -B build_tests && cmake --build build_tests && ctest --test-dir b
 
 ## Notes
 - The eyedropper lives in its own window because the OBS plugin API can't intercept clicks on the main preview.
+- **Properties-panel layout.** OBS's generic properties panel has no API for button icons, field widths or putting two properties on one row. `src/wb-ui.cpp` installs a Qt event filter that recognizes this plugin's widgets as OBS builds them: the pick button by its label, the Sample Size dropdown by its tooltip. The filter then:
+  - turns the button into an eyedropper icon (drawn in code, following the theme's text color);
+  - stops the dropdown from stretching;
+  - moves the button onto the dropdown's row.
+
+  If a future OBS changes how it builds that panel, these widgets fall back to OBS's default look. Nothing breaks.
+- **Logging.** The OBS log records each eyedropper capture (source, size, color space, first-frame stats) under `[obs-whitebalance]`.
 - Scaffolded from [obs-plugintemplate](https://github.com/obsproject/obs-plugintemplate). Local changes to the template:
   - `cmake/common/buildnumber.cmake` defaults the build number outside CI.
   - `CMakeLists.txt` drops Qt's `-framework AGL`, which current macOS SDKs no longer ship.

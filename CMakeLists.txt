@@ -57,6 +57,8 @@ target_sources(
     src/wb-math.h
     src/picker-dialog.cpp
     src/picker-dialog.hpp
+    src/wb-ui.cpp
+    src/wb-ui.hpp
 )
 
 set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})
