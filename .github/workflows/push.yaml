@@ -58,7 +58,7 @@ jobs:
           esac
 
       - name: Download Build Artifacts 📥
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         if: fromJSON(steps.check.outputs.validTag)
         id: download
 
@@ -83,10 +83,22 @@ jobs:
           for variant_data in "${variants[@]}"; do
             IFS=';' read -r variant suffix <<< "${variant_data}"
 
-            candidates=(*-${variant}-${commit_hash}/@(*|*-dbgsym).@(${suffix}))
+            # Zipped artifacts land in <name>-<hash>/<file>; unarchived ones (Windows)
+            # land in a directory named after the file itself: <file>/<file>.
+            candidates=(
+              *-${variant}-${commit_hash}/@(*|*-dbgsym).@(${suffix})
+              *-${variant}.@(${suffix})/*.@(${suffix})
+            )
 
             for candidate in "${candidates[@]}"; do
-              mv "${candidate}" "${root_dir}"
+              dest="${root_dir}/${candidate##*/}"
+              if [[ -d "${dest}" ]]; then
+                mv "${candidate}" "${dest}.part"
+                rmdir "${dest}"
+                mv "${dest}.part" "${dest}"
+              else
+                mv "${candidate}" "${root_dir}"
+              fi
             done
           done
 

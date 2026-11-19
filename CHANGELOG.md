@@ -8,6 +8,8 @@ All notable changes to this project are documented here. Versions follow [Semant
 - GitHub Actions CI building macOS, Windows and Ubuntu, with a format check. Version tags create a draft release with all packages and checksums.
 
 ### Changed
+- Windows package uses the OBS 33 plugin layout (`obs-whitebalance\obs-whitebalance.dll` with no `bin\64bit`), so OBS's Plugin Manager no longer marks the plugin **Legacy**.
+- Windows CI artifact is the plain package zip instead of a zip inside a zip.
 - Picker readout uses the system monospace font (was macOS-only Menlo).
 - Install instructions moved to `docs/INSTALL.md` and now cover Windows. Release builds are distributed only through GitHub Releases, not committed to the repository.
 
