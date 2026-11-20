@@ -55,12 +55,12 @@ cmake --install build_x64 --prefix release --config RelWithDebInfo
 ```
 Then copy `release\obs-whitebalance` into `C:\ProgramData\obs-studio\plugins\`.
 
-**Linux** (Ubuntu 24.04): `cmake --preset ubuntu-x86_64 && cmake --build --preset ubuntu-x86_64`. This needs the OBS and Qt6 development packages; see `.github/scripts/utils.zsh/setup_ubuntu`.
+**Linux** (Ubuntu 24.04, **untested**): `cmake --preset ubuntu-x86_64 && cmake --build --preset ubuntu-x86_64`. This needs the OBS and Qt6 development packages; see `.github/scripts/utils.zsh/setup_ubuntu`. CI builds Linux only to check the code compiles. No Linux packages are released, because the plugin hasn't been tested on Linux, and Ubuntu's own OBS packages (30.x) are older than the supported OBS 31+.
 
 ### Continuous integration
-GitHub Actions (`.github/workflows`, from obs-plugintemplate) builds macOS, Windows and Ubuntu on every push to `main`. It also checks formatting (clang-format 19, gersemi).
+GitHub Actions (`.github/workflows`, from obs-plugintemplate) builds macOS, Windows and Ubuntu (compile check only) on every push to `main`. It also checks formatting (clang-format 19, gersemi).
 
-Pushing a version tag such as `v0.2.0` also creates a **draft** GitHub release with every platform's package and checksums attached. Review the draft and publish it. Bump `version` in `buildspec.json` and update `CHANGELOG.md` before tagging.
+Pushing a version tag such as `v0.2.0` also creates a **draft** GitHub release with the macOS and Windows packages and checksums attached. Review the draft and publish it. Bump `version` in `buildspec.json` and update `CHANGELOG.md` before tagging.
 
 ### Unit tests (no OBS needed)
 ```sh
