@@ -10,7 +10,7 @@ Download the file for your platform from the latest release on the [Releases pag
 
 ## macOS
 1. Quit OBS.
-2. Extract the macOS archive (`obs-whitebalance-<version>-macos-universal.tar.xz` or `.zip`). You get `obs-whitebalance.plugin`.
+2. Double-click `obs-whitebalance-<version>-macos-universal.zip` to extract it. You get `obs-whitebalance.plugin`.
 3. Copy it into your OBS plugins folder (create the folder if needed). To update, replace the existing copy.
    ```sh
    mkdir -p ~/Library/Application\ Support/obs-studio/plugins

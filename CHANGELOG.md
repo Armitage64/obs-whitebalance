@@ -3,6 +3,9 @@
 All notable changes to this project are documented here. Versions follow [Semantic Versioning](https://semver.org/). Downloads are on the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases).
 
 ## [Unreleased]
+### Changed
+- Release workflow publishes exactly the macOS zip, the Windows zip and the source tarball. Previously it dropped the Windows zip, attached an untested macOS `.pkg`, and included Linux packages.
+- macOS builds always produce a `.zip` of the plugin bundle instead of a `.tar.xz`.
 
 ## [0.2.0] - 2026-11-20
 ### Added
