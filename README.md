@@ -20,6 +20,10 @@ Download the latest build for macOS (universal: Apple Silicon and Intel) or Wind
    - **Cancel** restores the previous values.
    - **Reset** sets both to 0.
 
+![The White Balance filter in OBS's Filters window: the eyedropper button next to the Sample Size dropdown, and Temperature and Tint sliders with spin boxes and a Reset button](docs/images/filter-panel.png)
+
+<sub>Screenshot shows [“Sikh man, Agra 10”](https://commons.wikimedia.org/wiki/File:Sikh_man,_Agra_10.jpg), © Yann Forget / Wikimedia Commons, licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The screenshot is licensed under CC BY-SA 3.0.</sub>
+
 Sign conventions match Lumetri:
 - **+Temperature** is warmer (orange); −Temperature is cooler (blue).
 - **+Tint** is magenta; −Tint is green.
