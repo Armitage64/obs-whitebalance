@@ -25,6 +25,11 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 OBS_DECLARE_MODULE()
 OBS_MODULE_USE_DEFAULT_LOCALE(PLUGIN_NAME, "en-US")
 
+MODULE_EXPORT const char *obs_module_name(void)
+{
+	return "White Balance Eyedropper";
+}
+
 MODULE_EXPORT const char *obs_module_description(void)
 {
 	return obs_module_text("WhiteBalance.Description");

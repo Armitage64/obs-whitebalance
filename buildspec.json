@@ -37,8 +37,8 @@
         }
     },
     "name": "obs-whitebalance",
-    "displayName": "White Balance",
-    "version": "0.1.0",
+    "displayName": "White Balance Eyedropper",
+    "version": "0.2.0",
     "author": "obs-whitebalance contributors",
     "website": "https://github.com/Armitage64/obs-whitebalance",
     "email": ""

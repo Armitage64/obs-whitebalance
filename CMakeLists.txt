@@ -67,4 +67,8 @@ target_sources(
     src/wb-ui.hpp
 )
 
+# Plugin metadata shown by OBS 33+'s Plugin Manager (display name, version, links).
+configure_file(src/manifest.json.in "${CMAKE_CURRENT_BINARY_DIR}/manifest.json" @ONLY)
+target_add_resource(${CMAKE_PROJECT_NAME} "${CMAKE_CURRENT_BINARY_DIR}/manifest.json")
+
 set_target_properties_plugin(${CMAKE_PROJECT_NAME} PROPERTIES OUTPUT_NAME ${_name})

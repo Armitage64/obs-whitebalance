@@ -1,0 +1,11 @@
+{
+    "display_name": "White Balance Eyedropper",
+    "name": "@CMAKE_PROJECT_NAME@",
+    "version": "@PLUGIN_VERSION@",
+    "description": "Eyedropper white balance (temperature and tint) for video sources.",
+    "urls": {
+        "repository": "@PLUGIN_WEBSITE@",
+        "website": "@PLUGIN_WEBSITE@",
+        "support": "@PLUGIN_WEBSITE@/issues"
+    }
+}

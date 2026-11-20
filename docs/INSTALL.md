@@ -1,4 +1,4 @@
-# Installing White Balance for OBS
+# Installing White Balance Eyedropper
 
 Download the file for your platform from the latest release on the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Each release's notes list the SHA-256 checksum of every file. To verify a download, run `shasum -a 256 <file>` on macOS or `Get-FileHash <file>` in PowerShell, and compare.
 
@@ -37,7 +37,7 @@ Download the file for your platform from the latest release on the [Releases pag
    - **OBS 31 or 32:** these versions only look in a `bin\64bit` subfolder. Create `obs-whitebalance\bin\64bit\` and move `obs-whitebalance.dll` (and `.pdb`) into it. OBS 33 still loads that layout but marks it **Legacy**.
 
 ## Check it loaded
-Start OBS. Right-click a video source → **Filters** → **+** → **White Balance**.
+Start OBS. Right-click a video source → **Filters** → **+** → **White Balance**. On OBS 33 or later, **Tools → Plugin Manager** also lists **White Balance Eyedropper**.
 
 You can also go to **Help → Log Files → View Current Log** and look for `[obs-whitebalance] plugin loaded successfully (version …)`.
 

@@ -1,6 +1,6 @@
-# White Balance Eyedropper for OBS
+# White Balance Eyedropper
 
-An OBS Studio video filter that brings Premiere Pro's **Lumetri Color → Basic Correction → WB Selector** to OBS. You click a neutral target (ideally an 18% gray card) with an eyedropper, and the filter sets **Temperature** and **Tint** so that the patch becomes neutral. Sliders with spin boxes let you fine-tune the result.
+A video filter for OBS Studio that brings Premiere Pro's **Lumetri Color → Basic Correction → WB Selector** to OBS. You click a neutral target (ideally an 18% gray card) with an eyedropper, and the filter sets **Temperature** and **Tint** so that the patch becomes neutral. Sliders with spin boxes let you fine-tune the result.
 
 ## Install
 Download the latest build for macOS (universal: Apple Silicon and Intel) or Windows (x64) from the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Install steps are in [`docs/INSTALL.md`](docs/INSTALL.md). Changes per version are in [`CHANGELOG.md`](CHANGELOG.md).
@@ -87,4 +87,11 @@ cmake -S tests -B build_tests && cmake --build build_tests && ctest --test-dir b
   - `CMakeLists.txt` drops Qt's `-framework AGL`, which current macOS SDKs no longer ship.
 - The UI conventions (grouping, sign tooltips) were inspired by the Lua script *Lumetric Corrector*. No code from it is used.
 
-License: GPL-2.0-or-later.
+## Reporting issues
+Report bugs and requests on [GitHub Issues](https://github.com/Armitage64/obs-whitebalance/issues). Include your OS, OBS version, and the `[obs-whitebalance]` lines from the OBS log.
+
+## AI disclosure
+This plugin was written with substantial help from an AI coding assistant: Anthropic's Claude, used through Claude Code. The assistant wrote most of the source code, build and CI configuration, and documentation, working from the maintainer's requirements and feedback. The maintainer defined the features and UI, tested every build in OBS on macOS and Windows, and decides what is released.
+
+## License
+GPL-2.0-or-later. This is a third-party plugin and is not affiliated with or endorsed by the OBS Project.

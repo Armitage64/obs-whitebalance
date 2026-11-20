@@ -3,11 +3,16 @@
 All notable changes to this project are documented here. Versions follow [Semantic Versioning](https://semver.org/). Downloads are on the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases).
 
 ## [Unreleased]
+
+## [0.2.0] - 2026-11-20
 ### Added
 - Windows (x64) support and build instructions.
+- Plugin metadata for OBS 33's Plugin Manager, which now lists the plugin as **White Balance Eyedropper** with its version and links.
 - GitHub Actions CI building macOS, Windows and Ubuntu, with a format check. Version tags create a draft release with all packages and checksums.
 
 ### Changed
+- Plugin renamed to **White Balance Eyedropper**. The filter is still listed as **White Balance** in a source's Filters menu.
+- README discloses that the plugin was written with AI assistance and explains how to report issues.
 - Windows package uses the OBS 33 plugin layout (`obs-whitebalance\obs-whitebalance.dll` with no `bin\64bit`), so OBS's Plugin Manager no longer marks the plugin **Legacy**.
 - Windows CI artifact is the plain package zip instead of a zip inside a zip.
 - Picker readout uses the system monospace font (was macOS-only Menlo).
@@ -25,5 +30,6 @@ First release.
 - Warnings for samples that are too dark or overexposed, and for sources that send only black frames.
 - English and German translations.
 
-[Unreleased]: https://github.com/Armitage64/obs-whitebalance/compare/v0.1...HEAD
+[Unreleased]: https://github.com/Armitage64/obs-whitebalance/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Armitage64/obs-whitebalance/compare/v0.1...v0.2.0
 [0.1.0]: https://github.com/Armitage64/obs-whitebalance/releases/tag/v0.1
