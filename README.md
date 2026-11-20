@@ -2,6 +2,10 @@
 
 A video filter for OBS Studio that brings Premiere Pro's **Lumetri Color → Basic Correction → WB Selector** to OBS. You click a neutral target (ideally an 18% gray card) with an eyedropper, and the filter sets **Temperature** and **Tint** so that the patch becomes neutral. Sliders with spin boxes let you fine-tune the result.
 
+![The White Balance Eyedropper window: a live view of the source with a magnified close-up under the cursor, a live RGB / Temperature / Tint readout, and Sample Size, Temperature and Tint controls](docs/images/eyedropper.png)
+
+<sub>Screenshot shows [“Sikh man, Agra 10”](https://commons.wikimedia.org/wiki/File:Sikh_man,_Agra_10.jpg), © Yann Forget / Wikimedia Commons, licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The photo is shown with white balance adjustments applied. The screenshot is licensed under CC BY-SA 3.0.</sub>
+
 ## Install
 Download the latest build for macOS (universal: Apple Silicon and Intel) or Windows (x64) from the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Install steps are in [`docs/INSTALL.md`](docs/INSTALL.md). Changes per version are in [`CHANGELOG.md`](CHANGELOG.md).
 
