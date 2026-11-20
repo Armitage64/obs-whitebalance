@@ -1,10 +1,8 @@
 # White Balance Eyedropper
 
-A video filter for OBS Studio that brings Premiere Pro's **Lumetri Color → Basic Correction → WB Selector** to OBS. You click a neutral target (ideally an 18% gray card) with an eyedropper, and the filter sets **Temperature** and **Tint** so that the patch becomes neutral. Sliders with spin boxes let you fine-tune the result.
+A video filter for OBS Studio based on Adobe Premiere's Lumetri Color White Balance Eyedropper. Just select a neutral target (ideally an 18% gray card) and the filter sets **Temperature** and **Tint** automatically. Sliders and spin boxes let you fine-tune the result.
 
 ![The White Balance Eyedropper window: a live view of the source with a magnified close-up under the cursor, a live RGB / Temperature / Tint readout, and Sample Size, Temperature and Tint controls](docs/images/eyedropper.png)
-
-<sub>Screenshot shows [“Sikh man, Agra 10”](https://commons.wikimedia.org/wiki/File:Sikh_man,_Agra_10.jpg), © Yann Forget / Wikimedia Commons, licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The photo is shown with white balance adjustments applied. The screenshot is licensed under CC BY-SA 3.0.</sub>
 
 ## Install
 Download the latest build for macOS (universal: Apple Silicon and Intel) or Windows (x64) from the [Releases page](https://github.com/Armitage64/obs-whitebalance/releases). Install steps are in [`docs/INSTALL.md`](docs/INSTALL.md). Changes per version are in [`CHANGELOG.md`](CHANGELOG.md).
@@ -22,7 +20,7 @@ Download the latest build for macOS (universal: Apple Silicon and Intel) or Wind
 
 ![The White Balance filter in OBS's Filters window: the eyedropper button next to the Sample Size dropdown, and Temperature and Tint sliders with spin boxes and a Reset button](docs/images/filter-panel.png)
 
-<sub>Screenshot shows [“Sikh man, Agra 10”](https://commons.wikimedia.org/wiki/File:Sikh_man,_Agra_10.jpg), © Yann Forget / Wikimedia Commons, licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The screenshot is licensed under CC BY-SA 3.0.</sub>
+<sub>[“Sikh man, Agra 10”](https://commons.wikimedia.org/wiki/File:Sikh_man,_Agra_10.jpg), © Yann Forget / Wikimedia Commons, licensed [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The screenshot is licensed under CC BY-SA 3.0.</sub>
 
 Sign conventions match Lumetri:
 - **+Temperature** is warmer (orange); −Temperature is cooler (blue).
@@ -99,7 +97,7 @@ cmake -S tests -B build_tests && cmake --build build_tests && ctest --test-dir b
 Report bugs and requests on [GitHub Issues](https://github.com/Armitage64/obs-whitebalance/issues). Include your OS, OBS version, and the `[obs-whitebalance]` lines from the OBS log.
 
 ## AI disclosure
-This plugin was written with substantial help from an AI coding assistant: Anthropic's Claude, used through Claude Code. The assistant wrote most of the source code, build and CI configuration, and documentation, working from the maintainer's requirements and feedback. The maintainer defined the features and UI, tested every build in OBS on macOS and Windows, and decides what is released.
+This plugin was written with substantial help from an AI coding assistant: Anthropic's Claude, used through Claude Code. 
 
 ## License
 GPL-2.0-or-later. This is a third-party plugin and is not affiliated with or endorsed by the OBS Project.
